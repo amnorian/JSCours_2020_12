@@ -1,1 +1,1 @@
-alert("le fichier est bien en place");
+var balise=document.queryselector('#jsload');
