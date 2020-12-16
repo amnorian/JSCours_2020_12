@@ -25,9 +25,14 @@ document.querySelector('form').addEventListener('submit', formSubmited); //docum
 //addevelistener(ce que l'on veut faire (ici submità, la function lancée sans les parenthèse car on ne veut pas l'executer))
 
 
+
+/** "faire /** puis entrer pour entrer toutes les éléménts @param qui seront définie dans la création du postit (créatePostit)" */
 /**
  * 
- * @param {string} Titre 
+ * @param {string} titre titre de la note
+ * @param {String} date date ISO AAA-MM*JJ pour la note
+ * @param {String} heure heure ISO HH:MM:SS pour la note
+ * @param {*String} description descritpion de la note
  */
 function createPostit(titre, date, heure, description) {
     var postit = document.createElement('div');
@@ -39,3 +44,4 @@ function createPostit(titre, date, heure, description) {
     liste.append(postit);
 }
 
+/** exemple de lancement de la fonction : createPostit('mon titre','2020-01-02','00:00:00', 'description du content') */
