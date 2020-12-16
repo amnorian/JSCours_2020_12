@@ -49,6 +49,7 @@ function createPostit(titre, date, heure, description) {
     </div><div class="postit-titre">' + titre + '</div> date : <span class="datetime">' + date + ' </span> heure : <span class:"datetime">' + heure + '</span>\
         <h2>Description</h2>'+ description;
     //pour sauter les lignes on met un "\"
+    postit.querySelector('.close img').addEventListener('click', deletePostit)
     var liste = document.querySelector('#list');
     liste.append(postit);
 }
@@ -56,5 +57,5 @@ function createPostit(titre, date, heure, description) {
 
 function deletePostit(evt) {
     console.log('evenement lié à la suppresion d\'une note', evt);
-
-}
+    evt.currentTarget.parentElement.parentElement.remove();
+} //ParentELement en premier car cela correspond au parent de l'image close (la croix) puis le parent de la croix (donc le postit)
