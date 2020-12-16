@@ -44,6 +44,11 @@ h1 {
     font-size: x-large;
 }
 
+#list>*{
+    vertical-align: top;
+    /*"ctrl :" pour ecrire un commentaire*/
+}
+
 body {
     background-image: url('../img/bg2.jpg');
 }
