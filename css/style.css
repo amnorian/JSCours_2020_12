@@ -7,8 +7,14 @@ h1 {
 
 #formulaire {
     border: 1px solid black;
-    border-radius: 7px/*pour faire les bords arrondis*/
-}
+    border-radius: 7px;/*pour faire les bords arrondis*/
+    min-width: 400px;
+    width :40%;
+    margin-left:30%;
+    padding: 10px;
+    background-color: rgba(255,255,255,0.753);
+    box-shadow: 30px 30 px 60px black);
+    }
 
 /*selection d'un postit pour le mettre en forme*/
 
