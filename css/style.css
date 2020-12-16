@@ -52,3 +52,10 @@ h1 {
 body {
     background-image: url('../img/bg2.jpg');
 }
+.close{
+    float: right;
+}
+.close img{
+    width : 32px;
+    height : 32px;
+}
