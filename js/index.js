@@ -59,3 +59,4 @@ function deletePostit(evt) {
     console.log('evenement lié à la suppresion d\'une note', evt);
     evt.currentTarget.parentElement.parentElement.remove();
 } //ParentELement en premier car cela correspond au parent de l'image close (la croix) puis le parent de la croix (donc le postit)
+//Un élément est contenu dans une balise (ex <span> coucou </span>) un node contient l'ensemble du coup un élément c'est un noeud, un noeud n'est pas toujours un élémént
