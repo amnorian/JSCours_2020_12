@@ -10,6 +10,14 @@ addEventListener('load', function (evt) {
     //usage d'une fonction
     initialisationJS('Rémy');
     document.querySelector('form').addEventListener('submit', formSubmited);
+    //chargement initial des postit
+    (new Crud(BASE_URL)).recuperer('/postit',function(mesPostits){
+        console.log('j\'ai fini de recevoir mes postil voici la liste;',mesPostits);
+        mesPostits.forEach(function(postit){
+            console.log(postit);
+            createPostit(postit.titre,postit.datetime.substring(0,10),postit.datetime.substring(12),postit.description)
+        });
+    })
 });
 
 

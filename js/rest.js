@@ -7,13 +7,14 @@ var Crud=function (baseurl) {
  * @param {Uri} ressourceURL chemin de la ressource
  */
 
-function get(ressourceURL) {
+function get(ressourceURL,clbk) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', baseurl + ressourceURL);
     xhr.onreadystatechange = function (evt) {
         if (evt.currentTarget.readyState < XMLHttpRequest.DONE) { return; }
         var objt = JSON.parse(evt.currentTarget.response);
         console.log(objt);
+        clbk(objt);
     };
     xhr.send();
 }
@@ -66,4 +67,9 @@ function put(ressourceUrl, ressource) {
     xhr.send(JSON.stringify(ressource));
 }
 
+//zone d'exposition des fonctions necessaire pour l'appel des fonctions du crud
+this.recuperer=get;
+this.creer=post;
+this.mettreAJour=put;
+this.supprimer=remove;
 }
