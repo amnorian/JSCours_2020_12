@@ -11,9 +11,9 @@ addEventListener('load', function (evt) {
     initialisationJS('Rémy');
     document.querySelector('form').addEventListener('submit', formSubmited);
     //chargement initial des postit
-    (new Crud(BASE_URL)).recuperer('/postit',function(mesPostits){
-        console.log('j\'ai fini de recevoir mes postil voici la liste;',mesPostits);
-        mesPostits.forEach(function(postit){
+    (new Crud(BASE_URL)).recuperer('/postit', function (mesPostits) {
+        console.log('j\'ai fini de recevoir mes postil voici la liste;', mesPostits);
+        mesPostits.forEach(function (postit) {
             console.log(postit);
             createPostitByObject(postit);
         });
@@ -70,10 +70,10 @@ function createPostitByObject(postitInput) {
     var postit = document.createElement('div');
     //créationde l'id de balise en liens avec l'id du postit dans le rest
     //pour faciliter la suppression
-    postit.id='postit-'+postitInput.id;
+    postit.id = 'postit-' + postitInput.id;
     postit.classList.add('postit');
     postit.innerHTML = '<div class="close"><img src="img/Close.png"/> \
-    </div><div class="postit-titre">' + postitInput.titre + '</div> date : <span class="datetime">' + postitInput.datetime.substring(0,10) + ' </span> heure : <span class:"datetime">' + postitInput.datetime.substring(11) + '</span>\
+    </div><div class="postit-titre">' + postitInput.titre + '</div> date : <span class="datetime">' + postitInput.datetime.substring(0, 10) + ' </span> heure : <span class:"datetime">' + postitInput.datetime.substring(11) + '</span>\
         <h2>Description</h2>'+ postitInput.description;
     //pour sauter les lignes on met un "\"
 
@@ -85,8 +85,10 @@ function createPostitByObject(postitInput) {
 
 function deletePostit(evt) {
     console.log('evenement lié à la suppresion d\'une note', evt);
-    evt.currentTarget.parentElement.parentElement.remove();
+    var domPostitId = evt.path[2].id.substring(7);
+    (new Crud(BASE_URL)).supprimer('/postit/' + domPostitId, function () {
+        evt.path[2].remove();
+        //evt.currentTarget.parentElement.parentElement.remove();
+    });
 } //ParentELement en premier car cela correspond au parent de l'image close (la croix) puis le parent de la croix (donc le postit)
 //Un élément est contenu dans une balise (ex <span> coucou </span>) un node contient l'ensemble du coup un élément c'est un noeud, un noeud n'est pas toujours un élémént
-
-

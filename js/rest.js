@@ -37,14 +37,19 @@ function post(ressourceUrl, ressource) {
     xhr.send(JSON.stringify(ressource));
 }
 
-
-function remove(ressourceUrl, ) {
+/**
+ * 
+ * @param {uri} ressourceUrl chemin de la ressource dans le serveur
+ * @param {Function} clbk fonction à executer à la fin de la fonction
+ */
+function remove(ressourceUrl, clbk) {
     var xhr = new XMLHttpRequest();
-    xhr.open('DELETE', baseurl + ressourceURL);
+    xhr.open('DELETE', baseurl + ressourceUrl);
     xhr.onreadystatechange = function (evt) {
-        if (xhr.readyState < XMLHttpRequest.DONE) { return; }
-        var objt = JSON.parse(xhr.response);
-        console.log(objt);
+        if (xhr.readyState < XMLHttpRequest.DONE || xhr.status != 200) { return; }
+        //var objt = JSON.parse(xhr.response);
+        //console.log(objt);
+        clbk();
     };
     xhr.send();
 }
