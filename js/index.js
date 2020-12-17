@@ -15,7 +15,7 @@ addEventListener('load', function (evt) {
         console.log('j\'ai fini de recevoir mes postil voici la liste;',mesPostits);
         mesPostits.forEach(function(postit){
             console.log(postit);
-            createPostit(postit.titre,postit.datetime.substring(0,10),postit.datetime.substring(12),postit.description)
+            createPostitByObject(postit);
         });
     })
 });
@@ -63,8 +63,30 @@ function createPostit(titre, date, heure, description) {
 }
 /** exemple de lancement de la fonction : createPostit('mon titre','2020-01-02','00:00:00', 'description du content') */
 
+
+/**fonction de création d'un postit avec ajour dand la balise di#list
+*/
+function createPostitByObject(postitInput) {
+    var postit = document.createElement('div');
+    //créationde l'id de balise en liens avec l'id du postit dans le rest
+    //pour faciliter la suppression
+    postit.id='postit-'+postitInput.id;
+    postit.classList.add('postit');
+    postit.innerHTML = '<div class="close"><img src="img/Close.png"/> \
+    </div><div class="postit-titre">' + postitInput.titre + '</div> date : <span class="datetime">' + postitInput.datetime.substring(0,10) + ' </span> heure : <span class:"datetime">' + postitInput.datetime.substring(11) + '</span>\
+        <h2>Description</h2>'+ postitInput.description;
+    //pour sauter les lignes on met un "\"
+
+    //selection à partir de ".close.img" puis addeventlistener('click,deletePostit)
+    postit.querySelector('.close img').addEventListener('click', deletePostit)
+    var liste = document.querySelector('#list');
+    liste.append(postit);
+}
+
 function deletePostit(evt) {
     console.log('evenement lié à la suppresion d\'une note', evt);
     evt.currentTarget.parentElement.parentElement.remove();
 } //ParentELement en premier car cela correspond au parent de l'image close (la croix) puis le parent de la croix (donc le postit)
 //Un élément est contenu dans une balise (ex <span> coucou </span>) un node contient l'ensemble du coup un élément c'est un noeud, un noeud n'est pas toujours un élémént
+
+
