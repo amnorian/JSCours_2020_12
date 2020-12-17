@@ -9,7 +9,7 @@ function initialisationJS(prenom) {
 addEventListener('load', function (evt) {
     //usage d'une fonction
     initialisationJS('Rémy');
-    document.querySelector('form').addEventListener('submit', formSubmitted);
+    document.querySelector('form').addEventListener('submit', formSubmited);
 });
 
 

@@ -1,0 +1,28 @@
+{
+  "postit": [
+    {
+      "id": 0,
+      "titre": "Mon 1er postit",
+      "datetime": "2020-12-17T10:06:00",
+      "description": "La description du postit"
+    },
+    {
+      "id": 1,
+      "titre": "Mon 2eme postit",
+      "datetime": "2020-12-17T10:06:00",
+      "description": "La description du postit n°2"
+    },
+    {
+      "titre": "ma note dymanique",
+      "datetime": "2020-02-01T00:00:00",
+      "descritption": "la description dynamique",
+      "id": 2
+    }
+  ],
+  "proprietaire": {
+    "nom": "CARPENTIER",
+    "prenom": "Rémy",
+    "mail": "desorbaix.formation@free.fr",
+    "tel": "0664276360"
+  }
+}
