@@ -1,3 +1,5 @@
+var lastID=0;
+var descripteurDInterval;
 //declaration d'une fonction
 function initialisationJS(prenom) {
     var jsload = document.querySelector('#jsload');
@@ -10,16 +12,33 @@ addEventListener('load', function (evt) {
     //usage d'une fonction
     initialisationJS('Rémy');
     document.querySelector('form').addEventListener('submit', formSubmited);
+    document.querySelector('form').addEventListener('submit',formReseted)
     //chargement initial des postit
-    (new Crud(BASE_URL)).recuperer('/postit', function (mesPostits) {
+    /*(new Crud(BASE_URL)).recuperer('/postit', function (mesPostits) {
         console.log('j\'ai fini de recevoir mes postil voici la liste;', mesPostits);
         mesPostits.forEach(function (postit) {
+            if(lastID<postit.id)
+            {
+                lastID=postit.id;
+            }
             console.log(postit);
             createPostitByObject(postit);
         });
-    })
+    })*/
+    pullingFunction();
+    descripteurDInterval=setInterval(pullingFunction,5000);
 });
 
+const formReseted=(evt)=>{
+    const form=document.forms['editor-form'];
+    for(let i=0;i < form.lenght;i++)
+    {
+        if(form[i].type !=='reset' && form[i].type !== 'submit')
+        {
+            form[i].value='';
+        }
+    }
+}
 
 function formSubmited(evt) {
     evt.preventDefault(); //arret du rechargement de la page qui supprimerait le post-it
@@ -48,6 +67,7 @@ function formSubmited(evt) {
             document.querySelector('#postit-'+postit.id).remove();
         }
         createPostitByObject(objsaved);
+        monFormulaire.reset();
     });
 }    
 //document.querySelector('form').addEventListener('submit', formSubmited);
@@ -81,6 +101,7 @@ function createPostit(titre, date, heure, description) {
 /**fonction de création d'un postit avec ajour dand la balise di#list
 */
 function createPostitByObject(postitInput) {
+    //if(lastID<postitInput.id)
     var postit = document.createElement('div');
     //créationde l'id de balise en liens avec l'id du postit dans le rest
     //pour faciliter la suppression
@@ -126,4 +147,28 @@ function putinformclickedpostit(evt){
     document.forms['editor-form']['time'].value=dompostit.querySelector('.postit-heure').innerText;
     document.forms['editor-form']['description'].value=dompostit.querySelector('.postit-description').innerText;
 
+}
+
+/**
+ * Fonction pour récuperer les notes a partir de la valeur d'un id lastID
+ */
+const pullingFunction=()=>{
+    let lastIdPlus1=lastID+1;
+    (new Crud(BASE_URL)).recuperer('/postit?id_gte='+lastIdPlus1,(listeDesPostIt)=>{
+        listeDesPostIt.map((element)=>{
+            lastID=(lastID<element.id?element.id:lastID);
+            createPostitByObject(element);
+        });
+    });
+}
+
+function getLastIdInDOM(){
+    lastID=-1;
+    const listechildren=document.querySelector('#liste').children;
+    for(domPostit in listechildren){
+        if(lasID<parseInt(domPostit.id.substring(1,7)))
+        {
+            lastID=domPostit.id.substring(7);
+        }
+    }
 }
