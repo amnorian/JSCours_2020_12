@@ -23,21 +23,25 @@ addEventListener('load', function (evt) {
 
 function formSubmited(evt) {
     evt.preventDefault(); //arret du rechargement de la page qui supprimerait le post-it
-    console.log('mon formulaire est "submit" ');
+    //console.log('mon formulaire est "submit" ');
     console.log(evt.target[0].value);
     console.log(evt.target[1].value);
     console.log(evt.target[2].value);
     console.log(evt.target[3].value);
     var monFormulaire = document.forms['editor-form'];
     //var dateFormated=moment(monFormulaire['date'].value,'DD MM YYYY')
-
-    createPostit(
-        monFormulaire['titre'].value,
-        monFormulaire['date'].value,
-        monFormulaire['time'].value,
-        monFormulaire['description'].value);
-}
-document.querySelector('form').addEventListener('submit', formSubmited); //document permet de selectionner tous le document, queryselector pour aller chercher le formulaire form
+    //constitution de l'obket à envoyer au rest
+    var postit = {
+        titre: evt.target[0].value,
+        datetime: evt.target[1].value + 'T' + evt.target[2].value,
+        description: evt.target[3].value
+    };
+    (new Crud(BASE_URL)).creer('/postit',postit,function(objsaved){
+        createPostitByObject(objsaved)
+    });
+}    
+//document.querySelector('form').addEventListener('submit', formSubmited);
+//document permet de selectionner tous le document, queryselector pour aller chercher le formulaire form
 //addevelistener(ce que l'on veut faire (ici submit à, la function lancée sans les parenthèse car on ne veut pas l'executer))
 
 
@@ -90,5 +94,6 @@ function deletePostit(evt) {
         evt.path[2].remove();
         //evt.currentTarget.parentElement.parentElement.remove();
     });
-} //ParentELement en premier car cela correspond au parent de l'image close (la croix) puis le parent de la croix (donc le postit)
-//Un élément est contenu dans une balise (ex <span> coucou </span>) un node contient l'ensemble du coup un élément c'est un noeud, un noeud n'est pas toujours un élémént
+} 
+//ParentELement en premier car cela correspond au parent de l'image close (la croix) puis le parent de la croix (donc le postit)
+//Un élément est contenu dans une balise (ex <span> coucou </span>) un node contient l'ensemble du coup un élément c'est un noeud, un noeud n'est pas toujours un élément

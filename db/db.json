@@ -5,12 +5,6 @@
       "titre": "Mon 1er postit",
       "datetime": "2020-12-17T10:06:00",
       "description": "La description du postit"
-    },
-    {
-      "id": 1,
-      "titre": "Mon 2eme postit",
-      "datetime": "2020-12-17T10:06:00",
-      "description": "La description du postit n°2"
     }
   ],
   "proprietaire": {

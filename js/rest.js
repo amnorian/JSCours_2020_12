@@ -7,7 +7,7 @@ var Crud=function (baseurl) {
  * @param {Uri} ressourceURL chemin de la ressource
  */
 
-function get(ressourceURL,clbk) {
+function _get(ressourceURL,clbk) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', baseurl + ressourceURL);
     xhr.onreadystatechange = function (evt) {
@@ -23,16 +23,17 @@ function get(ressourceURL,clbk) {
  * Permet l'envoi en post d'une ressource sur l'ressourceUrl 
  * @param {Uri} ressourceUrl chemin du post
  * @param {object} ressource data a envoyer
+ * @param {Funciton} clbk Fonction de callback avec injection du retour 
  */
-
-function post(ressourceUrl, ressource) {
+function _post(ressourceUrl, ressource,clbk) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', baseurl + ressourceUrl);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Accept', 'application/json');
     xhr.onreadystatechange = function (evt) {
-        if (xhr.readyState < 4) { return; }
+        if (xhr.readyState < 4 || xhr.status!=201) { return; }
         console.log(JSON.parse(xhr.response));
+        clbk(JSON.parse(xhr.response));
     }
     xhr.send(JSON.stringify(ressource));
 }
@@ -42,7 +43,7 @@ function post(ressourceUrl, ressource) {
  * @param {uri} ressourceUrl chemin de la ressource dans le serveur
  * @param {Function} clbk fonction à executer à la fin de la fonction
  */
-function remove(ressourceUrl, clbk) {
+function _remove(ressourceUrl, clbk) {
     var xhr = new XMLHttpRequest();
     xhr.open('DELETE', baseurl + ressourceUrl);
     xhr.onreadystatechange = function (evt) {
@@ -60,7 +61,7 @@ function remove(ressourceUrl, clbk) {
  * @param {*} ressourceUrl 
  * @param {*} ressource 
  */
-function put(ressourceUrl, ressource) {
+function _put(ressourceUrl, ressource) {
     var xhr = new XMLHttpRequest();
     xhr.open('PUT', baseurl + ressourceUrl);
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -73,8 +74,8 @@ function put(ressourceUrl, ressource) {
 }
 
 //zone d'exposition des fonctions necessaire pour l'appel des fonctions du crud
-this.recuperer=get;
-this.creer=post;
-this.mettreAJour=put;
-this.supprimer=remove;
+this.recuperer=_get;
+this.creer=_post;
+this.mettreAJour=_put;
+this.supprimer=_remove;
 }
