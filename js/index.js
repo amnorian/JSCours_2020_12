@@ -32,12 +32,22 @@ function formSubmited(evt) {
     //var dateFormated=moment(monFormulaire['date'].value,'DD MM YYYY')
     //constitution de l'obket à envoyer au rest
     var postit = {
-        titre: evt.target[0].value,
-        datetime: evt.target[1].value + 'T' + evt.target[2].value,
-        description: evt.target[3].value
+        titre: monFormulaire["titre"].value,
+        datetime: monFormulaire["date"].value + 'T' + monFormulaire["time"].value,
+        description: evt.target["description"].value
     };
-    (new Crud(BASE_URL)).creer('/postit',postit,function(objsaved){
-        createPostitByObject(objsaved)
+
+    if(monFormulaire['id'].value!==''){
+        postit.id=monFormulaire['id'].value;
+    }
+
+
+    (new Crud(BASE_URL)).envoiRessource('/postit',postit,function(objsaved){
+        if(undefined !== postit.id)
+        {
+            document.querySelector('#postit-'+postit.id).remove();
+        }
+        createPostitByObject(objsaved);
     });
 }    
 //document.querySelector('form').addEventListener('submit', formSubmited);
@@ -76,9 +86,10 @@ function createPostitByObject(postitInput) {
     //pour faciliter la suppression
     postit.id = 'postit-' + postitInput.id;
     postit.classList.add('postit');
+    postit.addEventListener('dblclick',putinformclickedpostit);
     postit.innerHTML = '<div class="close"><img src="img/Close.png"/> \
-    </div><div class="postit-titre">' + postitInput.titre + '</div> date : <span class="datetime">' + postitInput.datetime.substring(0, 10) + ' </span> heure : <span class:"datetime">' + postitInput.datetime.substring(11) + '</span>\
-        <h2>Description</h2>'+ postitInput.description;
+    </div><div class="postit-titre">' + postitInput.titre + '</div> date : <span class="datetime postit-date">' + postitInput.datetime.substring(0, 10) + '</span> heure : <span class="datetime postit-heure">' + postitInput.datetime.substring(11) + '</span>\
+        <h2>Description</h2><div class="postit-description">'+ postitInput.description+'</div>';
     //pour sauter les lignes on met un "\"
 
     //selection à partir de ".close.img" puis addeventlistener('click,deletePostit)
@@ -88,6 +99,8 @@ function createPostitByObject(postitInput) {
 }
 
 function deletePostit(evt) {
+    evt.stopPropagation();
+    //window.evt=evt; <--mis dans une variable globale pour avoir l'autocomplétion
     console.log('evenement lié à la suppresion d\'une note', evt);
     var domPostitId = evt.path[2].id.substring(7);
     (new Crud(BASE_URL)).supprimer('/postit/' + domPostitId, function () {
@@ -97,3 +110,20 @@ function deletePostit(evt) {
 } 
 //ParentELement en premier car cela correspond au parent de l'image close (la croix) puis le parent de la croix (donc le postit)
 //Un élément est contenu dans une balise (ex <span> coucou </span>) un node contient l'ensemble du coup un élément c'est un noeud, un noeud n'est pas toujours un élément
+function putinformclickedpostit(evt){
+    console.log('j\ai double cliqué sur un postit',evt);
+    var dompostit=evt.currentTarget;
+    console.log(
+        dompostit.id.substring(7),
+        dompostit.querySelector('.postit-titre').innerText,
+        dompostit.querySelector('.postit-date').innerText,
+        dompostit.querySelector('.postit-heure').innerText,
+        dompostit.querySelector('.postit-description').innerText
+    );
+    document.forms['editor-form']['id'].value=dompostit.id.substring(7);
+    document.forms['editor-form']['titre'].value=dompostit.querySelector('.postit-titre').innerText;
+    document.forms['editor-form']['date'].value=dompostit.querySelector('.postit-date').innerText;
+    document.forms['editor-form']['time'].value=dompostit.querySelector('.postit-heure').innerText;
+    document.forms['editor-form']['description'].value=dompostit.querySelector('.postit-description').innerText;
+
+}

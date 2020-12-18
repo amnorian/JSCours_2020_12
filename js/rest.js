@@ -61,14 +61,15 @@ function _remove(ressourceUrl, clbk) {
  * @param {*} ressourceUrl 
  * @param {*} ressource 
  */
-function _put(ressourceUrl, ressource) {
+function _put(ressourceUrl, ressource, clbk) {
     var xhr = new XMLHttpRequest();
     xhr.open('PUT', baseurl + ressourceUrl);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Accept', 'application/json');
     xhr.onreadystatechange = function (evt) {
-        if (xhr.readyState < 4) { return; }
+        if (xhr.readyState < 4 || xhr.status!==200) { return; }
         console.log(JSON.parse(xhr.response));
+        clbk(JSON.parse(xhr.response));
     }
     xhr.send(JSON.stringify(ressource));
 }
@@ -78,4 +79,14 @@ this.recuperer=_get;
 this.creer=_post;
 this.mettreAJour=_put;
 this.supprimer=_remove;
+this.envoiRessource=function(ressourceUrl,ressource,clbk)
+{
+    if(undefined !== ressource.id)
+    {
+        _put(ressourceUrl+'/'+ressource.id,ressource,clbk);
+    }
+    else{
+        _post(ressourceUrl,ressource,clbk);
+    }
+}
 }
